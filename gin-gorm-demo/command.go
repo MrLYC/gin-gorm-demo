@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/mrlyc/gin-gorm-demo/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/subcommands"
 	"github.com/mrlyc/gin-gorm-demo/config"
@@ -41,14 +43,26 @@ func (p *Command) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) 
 	logger := logging.GetLogger()
 	conf := config.Configuration.HTTP
 	address := fmt.Sprintf("%v:%v", conf.Host, conf.Port)
-	if !config.Configuration.Debug {
-		gin.SetMode(gin.ReleaseMode)
-	}
 
 	engine := gin.Default()
 	route(engine)
 
+	err := models.OpenDB()
+	if err != nil {
+		panic(err)
+	}
+
+	models.DB.SetLogger(logger)
+
+	if !config.Configuration.Debug {
+		gin.SetMode(gin.ReleaseMode)
+		models.DB.Debug()
+	}
+
 	logger.Infof("gin-gorm-demo listening on %v", address)
-	engine.Run(address)
+	err = engine.Run(address)
+	if err != nil {
+		panic(err)
+	}
 	return subcommands.ExitSuccess
 }

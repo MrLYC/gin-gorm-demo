@@ -46,3 +46,7 @@ test: ${SRCDIR}
 .PHONY: go-env
 go-env:
 	@${GOENV} go env
+
+.PHONY: generate
+generate:
+	go generate ./...

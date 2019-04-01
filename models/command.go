@@ -3,9 +3,8 @@ package models
 import (
 	"context"
 	"flag"
+
 	"github.com/google/subcommands"
-	"github.com/jinzhu/gorm"
-	"github.com/mrlyc/gin-gorm-demo/config"
 )
 
 // Command :
@@ -34,14 +33,14 @@ func (*Command) SetFlags(f *flag.FlagSet) {
 
 // Execute :
 func (p *Command) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
-	db, err := gorm.Open(config.Configuration.Database.Type, config.Configuration.Database.Connection)
+	err := OpenDB()
 	if err != nil {
-		panic("failed to connect database")
+		panic(err)
 	}
-	defer db.Close()
+	defer CloseDB()
 
 	// Migrate the schema
-	db.AutoMigrate(&Pairs{})
+	DB.AutoMigrate(&Pair{})
 
 	return subcommands.ExitSuccess
 }
