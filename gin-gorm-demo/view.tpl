@@ -1,5 +1,7 @@
 package demo
 
+import "github.com/cheekybits/genny/generic"
+
 import (
 	"strconv"
 	"time"
@@ -8,16 +10,18 @@ import (
 	"github.com/mrlyc/gin-gorm-demo/models"
 )
 
-// RetrievePairView :
-func RetrievePairView(ctx *gin.Context) {
+type TYPE generic.Type
+
+// RetrieveTYPEView :
+func RetrieveTYPEView(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.AbortWithStatus(400)
 		return
 	}
 
-	result := new(models.Pair)
-	err = models.NewPairQuerySet(models.DB).WithoutSoftDelete().IDEq(id).One(result)
+	result := new(models.TYPE)
+	err = models.NewTYPEQuerySet(models.DB).WithoutSoftDelete().IDEq(id).One(result)
 	if err != nil {
 		ResponseFromError(ctx, err)
 		return
@@ -26,8 +30,8 @@ func RetrievePairView(ctx *gin.Context) {
 	ResponseFromData(ctx, result)
 }
 
-// ListPairView :
-func ListPairView(ctx *gin.Context) {
+// ListTYPEView :
+func ListTYPEView(ctx *gin.Context) {
 	form := new(PaginationForm)
 	err := ctx.ShouldBindQuery(form)
 	if err != nil {
@@ -35,8 +39,8 @@ func ListPairView(ctx *gin.Context) {
 		return
 	}
 
-	result := new([]models.Pair)
-	err = models.NewPairQuerySet(models.DB).WithoutSoftDelete().Offset(form.Offset).Limit(form.Limit).All(result)
+	result := new([]models.TYPE)
+	err = models.NewTYPEQuerySet(models.DB).WithoutSoftDelete().Offset(form.Offset).Limit(form.Limit).All(result)
 	if err != nil {
 		ResponseFromError(ctx, err)
 		return
@@ -45,9 +49,9 @@ func ListPairView(ctx *gin.Context) {
 	ResponseFromData(ctx, result)
 }
 
-// CreatePairView :
-func CreatePairView(ctx *gin.Context) {
-	result := new(models.Pair)
+// CreateTYPEView :
+func CreateTYPEView(ctx *gin.Context) {
+	result := new(models.TYPE)
 	err := ctx.BindJSON(result)
 	if err != nil {
 		ctx.AbortWithStatus(400)
@@ -63,16 +67,16 @@ func CreatePairView(ctx *gin.Context) {
 	ResponseFromData(ctx, result)
 }
 
-// UpdatePairView :
-func UpdatePairView(ctx *gin.Context) {
+// UpdateTYPEView :
+func UpdateTYPEView(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.AbortWithStatus(400)
 		return
 	}
 
-	result := new(models.Pair)
-	err = models.NewPairQuerySet(models.DB).WithoutSoftDelete().IDEq(id).One(result)
+	result := new(models.TYPE)
+	err = models.NewTYPEQuerySet(models.DB).WithoutSoftDelete().IDEq(id).One(result)
 	if err != nil {
 		ResponseFromError(ctx, err)
 		return
@@ -89,15 +93,15 @@ func UpdatePairView(ctx *gin.Context) {
 	ResponseFromData(ctx, result)
 }
 
-// DeletePairView :
-func DeletePairView(ctx *gin.Context) {
+// DeleteTYPEView :
+func DeleteTYPEView(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		ctx.AbortWithStatus(400)
 		return
 	}
 
-	querySet := models.NewPairQuerySet(models.DB).WithoutSoftDelete().IDEq(id)
+	querySet := models.NewTYPEQuerySet(models.DB).WithoutSoftDelete().IDEq(id)
 	count, err := querySet.Count()
 	if err != nil {
 		ResponseFromError(ctx, err)
