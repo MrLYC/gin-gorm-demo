@@ -7,8 +7,8 @@ import (
 
 // PaginationForm :
 type PaginationForm struct {
-	Offset int `form:"offset,default=0"`
-	Limit  int `form:"limit,default=10"`
+	Offset int `form:"offset,default=0" binding:"min=0"`
+	Limit  int `form:"limit,default=10" binding:"min=0"`
 }
 
 // ModelView :
